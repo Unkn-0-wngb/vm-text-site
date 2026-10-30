@@ -3,36 +3,238 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VM-Text</title>
-<meta name="description" content="VM-Text turns Discord voice messages into text.">
+<title>VM-Text - Voice messages, as text</title>
+<meta name="description" content="VM-Text is a free Discord app that turns voice messages into text. Add it to your account or a server.">
+<meta name="theme-color" content="#0d0f15">
+<link rel="canonical" href="https://vm-text.laveryjonez.uk/">
 <link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/icon.png">
+<link rel="preload" href="/fonts/display.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VM-Text">
+<meta property="og:title" content="VM-Text - Voice messages, as text">
+<meta property="og:description" content="VM-Text is a free Discord app that turns voice messages into text. Add it to your account or a server.">
+<meta property="og:url" content="https://vm-text.laveryjonez.uk/">
+<meta property="og:image" content="https://vm-text.laveryjonez.uk/og.png">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-<header>
+<header class="site-header">
   <div class="wrap">
-    <a class="brand" href="/"><img src="/icon.png" alt="">VM-Text</a>
-    <nav>
+    <a class="brand" href="/"><img src="/icon.png" alt="" width="34" height="34">VM-Text</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/#features">Features</a>
+      <a href="/#how">How it works</a>
+      <a href="/#faq">FAQ</a>
       <a href="/tos">Terms</a>
       <a href="/pp">Privacy</a>
     </nav>
+    <a class="btn btn-primary btn-small" href="https://discord.com/oauth2/authorize?client_id=1565793546844377099&integration_type=1&scope=applications.commands">Add to Discord</a>
   </div>
 </header>
-
 <main>
-  <div class="wrap hero">
-    <h1>Voice messages, as text.</h1>
-    <p>VM-Text is a Discord app that transcribes voice messages. Right-click one, choose Apps, then Transcribe, and read it instead of listening.</p>
-    <div class="links">
-      <a href="/tos">Terms of Service</a>
-      <a href="/pp">Privacy Policy</a>
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow"><i></i>Free Discord app</span>
+      <h1>Read voice messages <em>instead of listening.</em></h1>
+      <p class="lede">VM-Text turns Discord voice messages into clean, readable text in seconds. Add it to your account to use it anywhere, or to a server to transcribe automatically.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://discord.com/oauth2/authorize?client_id=1565793546844377099&integration_type=1&scope=applications.commands"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>Add to my account</a>
+        <a class="btn btn-ghost" href="https://discord.com/oauth2/authorize?client_id=1565793546844377099&integration_type=0&scope=bot+applications.commands&permissions=117760"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg>Add to a server</a>
+      </div>
+      <p class="fine">No audio is ever saved. Works in DMs, group chats and servers.</p>
+    </div>
+
+    <div class="discord" role="img" aria-label="Example: a voice message from Alex, followed by VM-Text's transcript of it">
+      <div class="msg">
+        <div class="avatar alex">A</div>
+        <div>
+          <div class="msg-head"><b>Alex</b><time>Today at 18:46</time></div>
+          <div class="voice">
+            <span class="play"><svg viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21"/></svg></span>
+            <span class="wave"><i style="height:14px"></i><i style="height:15px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:28px"></i><i style="height:17px"></i><i style="height:14px"></i><i style="height:20px"></i><i style="height:14px"></i><i style="height:25px"></i><i style="height:15px"></i><i style="height:14px"></i><i style="height:18px"></i><i style="height:24px"></i><i style="height:14px"></i><i style="height:14px"></i><i style="height:21px"></i><i style="height:14px"></i><i style="height:14px"></i><i style="height:17px"></i><i style="height:14px"></i><i style="height:14px"></i><i style="height:14px"></i><i style="height:14px"></i></span>
+            <span class="dur">0:07</span>
+          </div>
+        </div>
+      </div>
+      <div class="msg">
+        <div class="avatar bot"><img src="/icon.png" alt=""></div>
+        <div>
+          <div class="msg-head"><b>VM-Text</b><span class="tag">APP</span><time>Today at 18:46</time></div>
+          <div class="embed">
+            <div class="embed-author"><span class="avatar alex">A</span>Alex</div>
+            <p class="embed-text">Hey, are we still on for the game tonight? I'll be online around eight.</p>
+            <p class="embed-sub">0:07 voice message &nbsp;&middot;&nbsp; <a>Jump to voice message</a></p>
+            <div class="embed-foot"><span class="avatar">S</span>Requested by Sam &nbsp;&middot;&nbsp; English &nbsp;&middot;&nbsp; transcribed in 3.2s</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</main>
+</div>
 
-<footer>
+<section id="features">
   <div class="wrap">
-    VM-Text is not affiliated with or endorsed by Discord Inc. &middot; <a href="/tos">Terms</a> &middot; <a href="/pp">Privacy</a>
+    <div class="section-head">
+      <p class="kicker">Features</p>
+      <h2>Three ways to read a voice message</h2>
+      <p>Pick what suits the moment: keep it to yourself, share it with the channel, or let the bot do it for everyone.</p>
+    </div>
+
+    <div class="bento">
+      <div class="card span-3">
+        <div class="icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h3>Transcribe (private)</h3>
+        <p>Right-click any voice message and only you see the transcript. Perfect for DMs, meetings and noisy places.</p>
+        <div class="menu-demo"><small>Apps</small><div>VM-Text</div><div class="on">Transcribe (private)</div><div>Transcribe (public)</div></div>
+      </div>
+
+      <div class="card span-3">
+        <div class="icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Transcribe (public)</h3>
+        <p>Post the transcript to the channel so everyone can read it, including people who can't play audio right now.</p>
+        <div class="menu-demo"><small>Apps</small><div>VM-Text</div><div>Transcribe (private)</div><div class="on">Transcribe (public)</div></div>
+      </div>
+
+      <div class="card span-2">
+        <div class="icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h3>Automatic</h3>
+        <p>Add the bot to a server and it replies to every voice message on its own. Admins can switch this off.</p>
+      </div>
+
+      <div class="card span-2">
+        <div class="icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+        <h3>Fair queue</h3>
+        <p>Busy? Requests line up in order and tell you your place: "You are #2 in the queue".</p>
+      </div>
+
+      <div class="card span-2">
+        <div class="icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <h3>Many languages</h3>
+        <p>Detects the language by itself, or lock one in for better accuracy. Over 20 to choose from.</p>
+      </div>
+
+      <div class="card span-6">
+        <div class="icon"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div>
+        <h3>Yours to configure</h3>
+        <p>Run <code>/config</code> to pick your language and output style, as a rich embed or plain text. Server admins can set a default language and turn automatic transcription on or off.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">How it works</p>
+      <h2>From voice to text in three steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <h3>Add VM-Text</h3>
+        <p>Add it to your Discord account to use it in any chat, or to a server so it works for everyone there.</p>
+      </div>
+      <div class="step">
+        <h3>Pick a voice message</h3>
+        <p>Right-click it (or long-press on mobile), choose Apps, then Transcribe. On a server with auto mode, it just happens.</p>
+      </div>
+      <div class="step">
+        <h3>Read it</h3>
+        <p>The transcript appears in seconds, with who said it, who asked, the language and how long it took.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Privacy</p>
+      <h2>Built to keep as little as possible</h2>
+      <p>Your audio is transcribed on our own server using an open-source model. It is never sent to an outside AI service, and it is deleted as soon as the transcript exists.</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><strong>0</strong><span>audio recordings saved</span></div>
+      <div class="fact"><strong>0</strong><span>third parties that receive your audio</span></div>
+      <div class="fact"><strong>3</strong><span>settings stored: language, output style, auto mode</span></div>
+    </div>
+    <p class="fine">Read the full <a href="/pp">Privacy Policy</a> and <a href="/tos">Terms of Service</a>.</p>
+  </div>
+</section>
+
+<section id="faq" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">FAQ</p>
+      <h2>Questions, answered</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Is VM-Text free?</summary>
+        <p>Yes. It's a free personal project with no ads and no paid tiers.</p>
+      </details>
+      <details>
+        <summary>Does it save my voice messages?</summary>
+        <p>No. The audio is held in memory while it's transcribed and then thrown away. Only your language and output settings are stored.</p>
+      </details>
+      <details>
+        <summary>Why does it need the Message Content permission?</summary>
+        <p>So it can see that a message in a server is a voice message and fetch its audio. It doesn't read or store ordinary text messages.</p>
+      </details>
+      <details>
+        <summary>What's the difference between adding it to my account and to a server?</summary>
+        <p>On your account, you can use the Transcribe commands in any DM, group chat or server, but only when you ask. On a server, the bot can also reply to every voice message automatically.</p>
+      </details>
+      <details>
+        <summary>How do I turn off automatic replies?</summary>
+        <p>Someone with the Manage Server permission can run <code>/config</code> and switch automatic transcription off.</p>
+      </details>
+      <details>
+        <summary>The transcript is wrong. Why?</summary>
+        <p>Background noise, strong accents, names and overlapping speech can trip it up. Setting the correct language in <code>/config</code> usually helps.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="add" class="final">
+  <div class="wrap">
+    <h2>Stop playing voice messages out loud.</h2>
+    <p>Add VM-Text in a couple of clicks and start reading them instead.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://discord.com/oauth2/authorize?client_id=1565793546844377099&integration_type=1&scope=applications.commands"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>Add to my account</a>
+      <a class="btn btn-ghost" href="https://discord.com/oauth2/authorize?client_id=1565793546844377099&integration_type=0&scope=bot+applications.commands&permissions=117760"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg>Add to a server</a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="/"><img src="/icon.png" alt="" width="34" height="34">VM-Text</a>
+        <p class="foot-about">Voice messages, as text. A free Discord app that transcribes voice messages without keeping them.</p>
+      </div>
+      <div class="foot-links">
+        <div>
+          <b>Add</b>
+          <a href="https://discord.com/oauth2/authorize?client_id=1565793546844377099&integration_type=1&scope=applications.commands">To your account</a>
+          <a href="https://discord.com/oauth2/authorize?client_id=1565793546844377099&integration_type=0&scope=bot+applications.commands&permissions=117760">To a server</a>
+        </div>
+        <div>
+          <b>Legal</b>
+          <a href="/tos">Terms of Service</a>
+          <a href="/pp">Privacy Policy</a>
+        </div>
+        <div>
+          <b>Contact</b>
+          <a href="mailto:contact@laveryjonez.uk">contact@laveryjonez.uk</a>
+        </div>
+      </div>
+    </div>
+    <p class="legal-line">VM-Text is an independent project and is not affiliated with or endorsed by Discord Inc.</p>
   </div>
 </footer>
 </body>
