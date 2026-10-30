@@ -1,0 +1,15 @@
+{
+  "name": "vm-text-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "python build.py && node minify.mjs",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name vm-text --branch main"
+  },
+  "devDependencies": {
+    "html-minifier-terser": "^7.2.0",
+    "lightningcss": "^1.33.0",
+    "terser": "^5.51.2",
+    "wrangler": "^4.156.0"
+  }
+}

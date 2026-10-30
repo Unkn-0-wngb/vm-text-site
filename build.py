@@ -1,8 +1,10 @@
 import re
+import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-PUBLIC = ROOT / "public"
+SRC = ROOT / "src"
+DIST = ROOT / "dist"
 SITE = "https://vm-text.laveryjonez.uk"
 APP_ID = "1565793546844377099"
 USER_LINK = f"https://discord.com/oauth2/authorize?client_id={APP_ID}&integration_type=1&scope=applications.commands"
@@ -11,110 +13,9 @@ SERVER_LINK = (
     "&scope=bot+applications.commands&permissions=117760"
 )
 EMAIL = "contact@laveryjonez.uk"
+UPDATED = "30 October 2026"
 
-ICONS = {
-    "user": '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>',
-    "server": '<rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/>',
-    "lock": '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
-    "users": '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
-    "zap": '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
-    "layers": '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>',
-    "globe": '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
-    "sliders": '<line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>',
-}
-
-
-def svg(name, cls=""):
-    return (
-        f'<svg class="{cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
-        f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{ICONS[name]}</svg>'
-    )
-
-
-def head(title, desc, path):
-    url = SITE + path
-    return f"""<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
-<meta name="description" content="{desc}">
-<meta name="theme-color" content="#0d0f15">
-<link rel="canonical" href="{url}">
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="apple-touch-icon" href="/icon.png">
-<link rel="preload" href="/fonts/display.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/style.css">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="VM-Text">
-<meta property="og:title" content="{title}">
-<meta property="og:description" content="{desc}">
-<meta property="og:url" content="{url}">
-<meta property="og:image" content="{SITE}/og.png">
-<meta name="twitter:card" content="summary_large_image">
-</head>
-<body>
-"""
-
-
-def header(current):
-    def link(href, label, key=None):
-        mark = ' aria-current="page"' if key and key == current else ""
-        return f'<a href="{href}"{mark}>{label}</a>'
-
-    return f"""<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="/"><img src="/icon.png" alt="" width="34" height="34">VM-Text</a>
-    <nav class="site-nav" aria-label="Main">
-      {link("/#features", "Features")}
-      {link("/#how", "How it works")}
-      {link("/#faq", "FAQ")}
-      {link("/tos", "Terms", "tos")}
-      {link("/pp", "Privacy", "pp")}
-    </nav>
-    <a class="btn btn-primary btn-small" href="{USER_LINK}">Add to Discord</a>
-  </div>
-</header>
-"""
-
-
-FOOTER = f"""<footer class="site-footer">
-  <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <a class="brand" href="/"><img src="/icon.png" alt="" width="34" height="34">VM-Text</a>
-        <p class="foot-about">Voice messages, as text. A free Discord app that transcribes voice messages without keeping them.</p>
-      </div>
-      <div class="foot-links">
-        <div>
-          <b>Add</b>
-          <a href="{USER_LINK}">To your account</a>
-          <a href="{SERVER_LINK}">To a server</a>
-        </div>
-        <div>
-          <b>Legal</b>
-          <a href="/tos">Terms of Service</a>
-          <a href="/pp">Privacy Policy</a>
-        </div>
-        <div>
-          <b>Contact</b>
-          <a href="mailto:{EMAIL}">{EMAIL}</a>
-        </div>
-      </div>
-    </div>
-    <p class="legal-line">VM-Text is an independent project and is not affiliated with or endorsed by Discord Inc.</p>
-  </div>
-</footer>
-</body>
-</html>
-"""
-
-
-def waveform():
-    heights = [30, 55, 80, 45, 100, 60, 35, 70, 40, 90, 55, 30, 65, 85, 50, 35, 75, 45, 25, 60, 40, 30, 50, 35]
-    return "".join(f'<i style="height:{max(14, h * 0.28):.0f}px"></i>' for h in heights)
-
+STROKE = 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"'
 
 MENU_ICONS = {
     "smile": '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
@@ -122,7 +23,6 @@ MENU_ICONS = {
     "forward": '<polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/>',
     "thread": '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
     "copy": '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
-    "translate": '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
     "bookmark": '<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>',
     "clock": '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
     "apps": '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',
@@ -150,11 +50,110 @@ MENU_GROUPS = [
 ]
 
 
+def head(title, desc, path, robots=None):
+    url = SITE + path
+    extra = f'<meta name="robots" content="{robots}">' if robots else ""
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+<meta name="description" content="{desc}">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4efe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14120e" media="(prefers-color-scheme: dark)">
+{extra}
+<link rel="canonical" href="{url}">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/icon.png">
+<link rel="preload" href="/fonts/serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/style.css">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VM-Text">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{desc}">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="{SITE}/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<script src="/k.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+"""
+
+
+def header(current=""):
+    def link(href, label, key=""):
+        mark = ' aria-current="page"' if key and key == current else ""
+        return f'<a href="{href}"{mark}>{label}</a>'
+
+    return f"""<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/icon.png" alt="" width="30" height="30">VM-Text</a>
+    <nav aria-label="Main">
+      {link("/#features", "Features")}
+      {link("/#using", "Using it")}
+      {link("/#faq", "FAQ")}
+      {link("/tos", "Terms", "tos")}
+      {link("/pp", "Privacy", "pp")}
+      <a class="add" href="{USER_LINK}">Add to Discord</a>
+    </nav>
+  </div>
+</header>
+"""
+
+
+FOOTER = f"""<footer class="foot">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="/"><img src="/icon.png" alt="" width="30" height="30">VM-Text</a>
+      <p>A Discord app that turns voice messages into text. Run by Lavery.Jonez in Scotland.</p>
+    </div>
+    <div class="cols">
+      <div>
+        <h2>Add it</h2>
+        <ul>
+          <li><a href="{USER_LINK}">To your account</a></li>
+          <li><a href="{SERVER_LINK}">To a server</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Legal</h2>
+        <ul>
+          <li><a href="/tos">Terms of Service</a></li>
+          <li><a href="/pp">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="mailto:{EMAIL}">{EMAIL}</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">VM-Text is an independent project. It is not affiliated with or endorsed by Discord Inc.</p>
+  </div>
+</footer>
+</body>
+</html>
+"""
+
+
+def waveform():
+    heights = [30, 55, 80, 45, 100, 60, 35, 70, 40, 90, 55, 30, 65, 85, 50, 35, 75, 45, 25, 60, 40, 30, 50, 35]
+    bars = []
+    for i, h in enumerate(heights):
+        bh = max(5, h * 0.24)
+        fill = "#8b95ff" if i < 9 else "#6d7580"
+        bars.append(f'<rect x="{i * 6}" y="{(26 - bh) / 2:.1f}" width="3" height="{bh:.1f}" rx="1.5" fill="{fill}"/>')
+    return f'<svg class="wave" viewBox="0 0 144 26" aria-hidden="true">{"".join(bars)}</svg>'
+
+
 def ctx_menu(active="Transcribe (private)"):
-    stroke = 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"'
-    send = f'<svg viewBox="0 0 24 24" {stroke}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
-    chevron = f'<svg viewBox="0 0 24 24" {stroke}><polyline points="9 18 15 12 9 6"/></svg>'
-    search = f'<svg viewBox="0 0 24 24" {stroke}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'
+    send = f'<svg viewBox="0 0 24 24" {STROKE}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
+    chevron = f'<svg viewBox="0 0 24 24" {STROKE}><polyline points="9 18 15 12 9 6"/></svg>'
+    search = f'<svg viewBox="0 0 24 24" {STROKE}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'
     icon = '<img src="/icon.png" alt="" width="20" height="20">'
 
     def item(name):
@@ -168,11 +167,11 @@ def ctx_menu(active="Transcribe (private)"):
             cls = {"on": " on", "danger": " danger"}.get(state, "")
             arrow = chevron if state in ("sub", "on") else ""
             rows.append(
-                f'<div class="mrow{cls}"><svg viewBox="0 0 24 24" {stroke}>{MENU_ICONS[key]}</svg><span>{label}</span>{arrow}</div>'
+                f'<div class="mrow{cls}"><svg viewBox="0 0 24 24" {STROKE}>{MENU_ICONS[key]}</svg><span>{label}</span>{arrow}</div>'
             )
         groups.append('<div class="mgroup">' + "".join(rows) + "</div>")
 
-    return f"""<div class="ctx3" role="img" aria-label="Discord right-click menu: Apps, then VM-Text, then {active}">
+    return f"""<div class="ctx3" role="img" aria-label="Discord's right-click menu: Apps, then VM-Text, then {active}">
   <div class="ctx-menu">{"".join(groups)}</div>
   <div class="ctx">
     <div class="ctx-panel">
@@ -189,196 +188,149 @@ def ctx_menu(active="Transcribe (private)"):
 
 def index():
     page = head(
-        "VM-Text - Voice messages, as text",
+        "VM-Text: voice messages, as text",
         "VM-Text is a free Discord app that turns voice messages into text. Add it to your account or a server.",
         "/",
     )
-    page += header("home")
-    page += f"""<main>
-<div class="hero">
+    page += header()
+    page += f"""<main id="main">
+<section class="hero">
   <div class="wrap">
     <div>
-      <span class="eyebrow"><i></i>Free Discord app</span>
-      <h1>Read voice messages <em>instead of listening.</em></h1>
-      <p class="lede">VM-Text turns Discord voice messages into clean, readable text in seconds. Add it to your account to use it anywhere, or to a server to transcribe automatically.</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="{USER_LINK}">{svg("user")}Add to my account</a>
-        <a class="btn btn-ghost" href="{SERVER_LINK}">{svg("server")}Add to a server</a>
+      <h1>Voice messages, <span class="mark">as text.</span></h1>
+      <p class="lede">VM-Text is a Discord app that transcribes voice messages. Right-click one, pick Apps, and a few seconds later you have the words. The audio is never saved.</p>
+      <div class="btns">
+        <a class="btn solid" href="{USER_LINK}">Add to my account</a>
+        <a class="btn" href="{SERVER_LINK}">Add to a server</a>
       </div>
-      <p class="fine">No audio is ever saved. Works in DMs, group chats and servers.</p>
+      <p class="small">Free. Works in DMs, group chats and servers.</p>
     </div>
 
     <div class="discord" role="img" aria-label="Example: a voice message from Alex, followed by VM-Text's transcript of it">
       <div class="msg">
-        <div class="avatar alex">A</div>
+        <div class="av">A</div>
         <div>
           <div class="msg-head"><b>Alex</b><time>Today at 18:46</time></div>
           <div class="voice">
             <span class="play"><svg viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21"/></svg></span>
-            <span class="wave">{waveform()}</span>
+            {waveform()}
             <span class="dur">0:07</span>
           </div>
         </div>
       </div>
       <div class="msg">
-        <div class="avatar bot"><img src="/icon.png" alt=""></div>
+        <div class="av bot"><img src="/icon.png" alt=""></div>
         <div>
           <div class="msg-head"><b>VM-Text</b><span class="tag">APP</span><time>Today at 18:46</time></div>
           <div class="embed">
-            <div class="embed-author"><span class="avatar alex">A</span>Alex</div>
+            <div class="embed-author"><span class="av">A</span>Alex</div>
             <p class="embed-text">Hey, are we still on for the game tonight? I'll be online around eight.</p>
-            <p class="embed-sub">0:07 voice message &nbsp;&middot;&nbsp; <a>Jump to voice message</a></p>
-            <div class="embed-foot"><span class="avatar">S</span>Requested by Sam &nbsp;&middot;&nbsp; English &nbsp;&middot;&nbsp; transcribed in 3.2s</div>
+            <p class="embed-sub">0:07 voice message &nbsp;&middot;&nbsp; <span class="lnk">Jump to voice message</span></p>
+            <div class="embed-foot"><span class="av">S</span>Requested by Sam &nbsp;&middot;&nbsp; English &nbsp;&middot;&nbsp; transcribed in 3.2s</div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<section id="features">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="kicker">Features</p>
-      <h2>Three ways to read a voice message</h2>
-      <p>Pick what suits the moment: keep it to yourself, share it with the channel, or let the bot do it for everyone.</p>
-    </div>
-
-    <div class="bento">
-      <div class="card span-6 duo">
-        <div>
-          <div class="icon">{svg("lock")}</div>
-          <h3>Right-click, pick Apps, choose how to share</h3>
-          <div class="opt">
-            <h4>Transcribe (private)</h4>
-            <p>Only you see the transcript. Perfect for DMs, meetings and noisy places.</p>
-          </div>
-          <div class="opt">
-            <h4>Transcribe (public)</h4>
-            <p>Posts the transcript to the channel so everyone can read it, including people who can't play audio right now.</p>
-          </div>
-        </div>
-        <div class="ctx-scroll">{ctx_menu()}</div>
-      </div>
-
-      <div class="card span-2">
-        <div class="icon">{svg("zap")}</div>
-        <h3>Automatic</h3>
-        <p>Add the bot to a server and it replies to every voice message on its own. Admins can switch this off.</p>
-      </div>
-
-      <div class="card span-2">
-        <div class="icon">{svg("layers")}</div>
-        <h3>Fair queue</h3>
-        <p>Busy? Requests line up in order and tell you your place: "You are #2 in the queue".</p>
-      </div>
-
-      <div class="card span-2">
-        <div class="icon">{svg("globe")}</div>
-        <h3>Many languages</h3>
-        <p>Detects the language by itself, or lock one in for better accuracy. Over 20 to choose from.</p>
-      </div>
-
-      <div class="card span-6">
-        <div class="icon">{svg("sliders")}</div>
-        <h3>Yours to configure</h3>
-        <p>Run <code>/config</code> to pick your language and output style, as a rich embed or plain text. Server admins can set a default language and turn automatic transcription on or off.</p>
-      </div>
+<section class="part" id="features">
+  <div class="wrap split">
+    <h2>What it does</h2>
+    <div class="rows">
+      <div><h3>Transcribe (private)</h3><p>Only you see the result. Good for DMs, meetings, or anywhere you can't play audio.</p></div>
+      <div><h3>Transcribe (public)</h3><p>Posts the transcript in the channel so everyone there can read it.</p></div>
+      <div><h3>Automatic replies</h3><p>In a server, the bot can reply to every voice message by itself. Anyone with Manage Server can switch that off.</p></div>
+      <div><h3>A queue</h3><p>Requests are handled one at a time, in order. If you have to wait, it tells you your place.</p></div>
+      <div><h3>Done once</h3><p>Each voice message is transcribed a single time. Ask again later and you get the saved text straight away.</p></div>
+      <div><h3>Languages</h3><p>It works out the language on its own. If it keeps guessing wrong, pick one from the list of 21 in <code>/config</code>.</p></div>
+      <div><h3>Settings</h3><p>Run <code>/config</code> to choose your language and whether replies are embeds or plain text. Server admins can set a default language and the automatic replies.</p></div>
     </div>
   </div>
 </section>
 
-<section id="how" class="alt">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="kicker">How it works</p>
-      <h2>From voice to text in three steps</h2>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <h3>Add VM-Text</h3>
-        <p>Add it to your Discord account to use it in any chat, or to a server so it works for everyone there.</p>
-      </div>
-      <div class="step">
-        <h3>Pick a voice message</h3>
-        <p>Right-click it (or long-press on mobile), choose Apps, then Transcribe. On a server with auto mode, it just happens.</p>
-      </div>
-      <div class="step">
-        <h3>Read it</h3>
-        <p>The transcript appears in seconds, with who said it, who asked, the language and how long it took.</p>
-      </div>
+<section class="part" id="using">
+  <div class="wrap split">
+    <h2>Using it</h2>
+    <div>
+      <ol class="steps">
+        <li><span>Add VM-Text to your Discord account, or to a server.</span></li>
+        <li><span>Right-click a voice message (long-press on mobile) and open Apps, then VM-Text.</span></li>
+        <li><span>Choose private or public. The transcript turns up in a few seconds.</span></li>
+      </ol>
+      <div class="diagram-wrap">{ctx_menu()}</div>
     </div>
   </div>
 </section>
 
-<section id="privacy">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="kicker">Privacy</p>
-      <h2>Built to keep as little as possible</h2>
-      <p>Your audio is transcribed on our own server using an open-source model. It is never sent to an outside AI service, and it is deleted as soon as the transcript exists.</p>
+<section class="part" id="privacy">
+  <div class="wrap split">
+    <h2>Your data</h2>
+    <div class="prose-lg">
+      <p>Voice messages are transcribed on my own server with Whisper, an open-source model. The audio isn't sent to any outside service, and it's thrown away as soon as the text exists.</p>
+      <p>What is kept:</p>
+      <ul>
+        <li>the transcript text, so the same message isn't transcribed twice (it's deleted if the message is deleted);</li>
+        <li>your settings: language, output style, and the automatic replies setting for a server.</li>
+      </ul>
+      <p>No ads, no tracking, no analytics. The full details are in the <a href="/pp">Privacy Policy</a> and the <a href="/tos">Terms</a>.</p>
     </div>
-    <div class="facts">
-      <div class="fact"><strong>0</strong><span>audio recordings saved</span></div>
-      <div class="fact"><strong>0</strong><span>third parties that receive your audio</span></div>
-      <div class="fact"><strong>Text</strong><span>is all that's kept: transcripts, so each message is only done once, and a few settings</span></div>
-    </div>
-    <p class="fine">Read the full <a href="/pp">Privacy Policy</a> and <a href="/tos">Terms of Service</a>.</p>
   </div>
 </section>
 
-<section id="faq" class="alt">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="kicker">FAQ</p>
-      <h2>Questions, answered</h2>
-    </div>
-    <div class="faq">
+<section class="part" id="faq">
+  <div class="wrap split">
+    <h2>Questions</h2>
+    <div>
       <details>
-        <summary>Is VM-Text free?</summary>
-        <p>Yes. It's a free personal project with no ads and no paid tiers.</p>
+        <summary>Is it free?</summary>
+        <p>Yes. It's a personal project with no ads and nothing to pay for.</p>
       </details>
       <details>
-        <summary>Does it save my voice messages?</summary>
-        <p>No. The audio is held in memory while it's transcribed and then thrown away. The transcript text is saved so each voice message is only transcribed once, and asking again shows the saved text. It's deleted if the message is deleted. Your language and output settings are stored too.</p>
+        <summary>Does it keep my voice messages?</summary>
+        <p>No. The audio is held in memory while it's transcribed and then discarded. The transcript text is saved so each message is only done once, and it's deleted if the message is deleted.</p>
       </details>
       <details>
-        <summary>Why does it need the Message Content permission?</summary>
-        <p>So it can see that a message in a server is a voice message and fetch its audio. It doesn't read or store ordinary text messages.</p>
+        <summary>Why does it ask for the Message Content permission?</summary>
+        <p>So it can tell that a message in a server is a voice message and fetch the audio. It doesn't read or store ordinary text messages.</p>
       </details>
       <details>
-        <summary>What's the difference between adding it to my account and to a server?</summary>
-        <p>On your account, you can use the Transcribe commands in any DM, group chat or server, but only when you ask. On a server, the bot can also reply to every voice message automatically.</p>
+        <summary>Account or server, which should I pick?</summary>
+        <p>On your account you can use the Transcribe commands in any DM, group chat or server, but only when you ask. Added to a server, the bot can also reply to every voice message there automatically. You can have both.</p>
       </details>
       <details>
-        <summary>How do I turn off automatic replies?</summary>
+        <summary>How do I turn off the automatic replies?</summary>
         <p>Someone with the Manage Server permission can run <code>/config</code> and switch automatic transcription off.</p>
       </details>
       <details>
-        <summary>The transcript is wrong. Why?</summary>
-        <p>Background noise, strong accents, names and overlapping speech can trip it up. Setting the correct language in <code>/config</code> usually helps.</p>
+        <summary>The transcript is wrong.</summary>
+        <p>Background noise, strong accents, names and people talking over each other all cause mistakes. Setting the right language in <code>/config</code> usually helps.</p>
+      </details>
+      <details>
+        <summary>Who runs this?</summary>
+        <p>Lavery.Jonez, in Scotland. You can reach me at <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
       </details>
     </div>
   </div>
 </section>
 
-<section id="add" class="final">
+<section class="part closing">
   <div class="wrap">
-    <h2>Stop playing voice messages out loud.</h2>
-    <p>Add VM-Text in a couple of clicks and start reading them instead.</p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="{USER_LINK}">{svg("user")}Add to my account</a>
-      <a class="btn btn-ghost" href="{SERVER_LINK}">{svg("server")}Add to a server</a>
+    <h2>Give it a go on your own account first.</h2>
+    <p>It takes a couple of clicks, and you can remove it just as easily.</p>
+    <div class="btns">
+      <a class="btn solid" href="{USER_LINK}">Add to my account</a>
+      <a class="btn" href="{SERVER_LINK}">Add to a server</a>
     </div>
   </div>
 </section>
 </main>
 """
     page += FOOTER
-    (PUBLIC / "index.html").write_text(page, encoding="utf-8")
+    (DIST / "index.html").write_text(page, encoding="utf-8")
 
 
-def legal(name, title, desc, updated):
+def legal(name, title, desc):
     body = (ROOT / "content" / f"{name}.html").read_text(encoding="utf-8")
     toc = []
 
@@ -393,12 +345,10 @@ def legal(name, title, desc, updated):
 
     page = head(f"{title} - VM-Text", desc, f"/{name}")
     page += header(name)
-    page += f"""<main>
-<div class="page-head">
-  <div class="wrap">
-    <h1>{title}</h1>
-    <p>Last updated {updated}</p>
-  </div>
+    page += f"""<main id="main">
+<div class="wrap doc-head">
+  <h1>{title}</h1>
+  <p>Last updated {UPDATED}</p>
 </div>
 <div class="wrap legal">
   <aside class="toc" aria-label="On this page"><b>On this page</b>{toc_html}</aside>
@@ -409,9 +359,40 @@ def legal(name, title, desc, updated):
 </main>
 """
     page += FOOTER
-    (PUBLIC / f"{name}.html").write_text(page, encoding="utf-8")
+    (DIST / f"{name}.html").write_text(page, encoding="utf-8")
 
+
+def not_found():
+    page = head("Page not found - VM-Text", "That page doesn't exist.", "/404", robots="noindex")
+    page += header()
+    page += f"""<main id="main">
+<div class="wrap lost">
+  <h1>That page isn't here.</h1>
+  <p>The link may be old or mistyped. <a href="/">Go back to the start</a>.</p>
+</div>
+</main>
+"""
+    page += FOOTER
+    (DIST / "404.html").write_text(page, encoding="utf-8")
+
+
+def sitemap():
+    urls = "".join(f"<url><loc>{SITE}{p}</loc><lastmod>2026-10-30</lastmod></url>" for p in ("/", "/tos", "/pp"))
+    (DIST / "sitemap.xml").write_text(
+        f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>',
+        encoding="utf-8",
+    )
+    (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
+
+
+if DIST.exists():
+    shutil.rmtree(DIST)
+shutil.copytree(SRC / "static", DIST)
+shutil.copy(SRC / "style.css", DIST / "style.css")
+shutil.copy(SRC / "k.js", DIST / "k.js")
 
 index()
-legal("tos", "Terms of Service", "The terms for using the VM-Text Discord app.", "30 October 2026")
-legal("pp", "Privacy Policy", "How the VM-Text Discord app handles your data.", "30 October 2026")
+legal("tos", "Terms of Service", "The terms for using the VM-Text Discord app.")
+legal("pp", "Privacy Policy", "How the VM-Text Discord app handles your data.")
+not_found()
+sitemap()
