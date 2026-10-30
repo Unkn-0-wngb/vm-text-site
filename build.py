@@ -1,3 +1,4 @@
+import hashlib
 import math
 import re
 import shutil
@@ -13,8 +14,19 @@ SERVER_LINK = (
     f"https://discord.com/oauth2/authorize?client_id={APP_ID}&integration_type=0"
     "&scope=bot+applications.commands&permissions=117760"
 )
+SUPPORT = "https://discord.gg/wXhHBKNAQe"
 EMAIL = "contact@laveryjonez.uk"
 UPDATED = "30 October 2026"
+
+
+def stamp(name):
+    digest = hashlib.sha1((SRC / name).read_bytes()).hexdigest()[:8]
+    stem, dot, ext = name.rpartition(".")
+    return f"{stem}.{digest}.{ext}"
+
+
+CSS = stamp("style.css")
+JS = stamp("k.js")
 
 STROKE = 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"'
 
@@ -69,7 +81,7 @@ def head(title, desc, path, robots=None):
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/icon.png">
 <link rel="preload" href="/fonts/serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/{CSS}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="VM-Text">
 <meta property="og:title" content="{title}">
@@ -77,7 +89,7 @@ def head(title, desc, path, robots=None):
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="{SITE}/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<script src="/k.js" defer></script>
+<script src="/{JS}" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -96,6 +108,7 @@ def header(current=""):
       {link("/#features", "Features")}
       {link("/#using", "Using it")}
       {link("/#faq", "FAQ")}
+      <a href="{SUPPORT}">Support</a>
       {link("/tos", "Terms", "tos")}
       {link("/pp", "Privacy", "pp")}
       <a class="add" href="{USER_LINK}">Add to Discord</a>
@@ -129,6 +142,7 @@ FOOTER = f"""<footer class="foot">
       <div>
         <h2>Contact</h2>
         <ul>
+          <li><a href="{SUPPORT}">Support server</a></li>
           <li><a href="mailto:{EMAIL}">{EMAIL}</a></li>
         </ul>
       </div>
@@ -232,6 +246,7 @@ def index():
       <p class="small">Works in DMs, group chats and servers.</p>
     </div>
 
+    <div class="demo">
     <div class="discord" role="img" aria-label="Example: a voice message from Alex, followed by VM-Text's transcript of it">
       <div class="msg">
         <div class="av">A</div>
@@ -257,11 +272,10 @@ def index():
         </div>
       </div>
     </div>
+    </div>
   </div>
-  <div class="field">{field()}<div class="head"><span>0:03 / 0:07</span></div></div>
+  <div class="field">{field()}<div class="head"></div></div>
 </section>
-
-{strip()}
 
 <section class="part" id="features">
   <div class="wrap split">
@@ -335,6 +349,10 @@ def index():
         <p>Background noise, strong accents, names and people talking over each other all cause mistakes. Setting the right language in <code>/config</code> usually helps.</p>
       </details>
       <details>
+        <summary>Where do I get help?</summary>
+        <p>Join the <a href="{SUPPORT}">support server</a> and open a ticket, or email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
+      </details>
+      <details>
         <summary>Who runs this?</summary>
         <p>Lavery.Jonez, in Scotland. You can reach me at <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
       </details>
@@ -342,13 +360,23 @@ def index():
   </div>
 </section>
 
+<section class="part" id="maker">
+  <div class="wrap split">
+    <div class="rail"><p class="tc">00:35</p><h2>Who's behind it</h2></div>
+    <div class="prose-lg">
+      <p>VM-Text is a one-person project, built and run by Lavery.Jonez in Scotland. It runs on a small server I look after myself, which is why requests go through a queue one at a time.</p>
+      <p>If something breaks or you want it to do something it doesn't, tell me in the <a href="{SUPPORT}">support server</a> or at <a href="mailto:{EMAIL}">{EMAIL}</a>. I read everything.</p>
+    </div>
+  </div>
+</section>
+
 <section class="closing">
   <div class="wrap">
     <h2>Try it on your own account first.</h2>
-    <p>A couple of clicks to add, and just as easy to remove.</p>
+    <p>A couple of clicks to add, and just as easy to remove. Stuck? The <a href="{SUPPORT}">support server</a> is open.</p>
     <div class="btns">
-      <a class="btn dark" href="{USER_LINK}">Add to my account</a>
-      <a class="btn line" href="{SERVER_LINK}">Add to a server</a>
+      <a class="btn solid" href="{USER_LINK}">Add to my account</a>
+      <a class="btn" href="{SERVER_LINK}">Add to a server</a>
     </div>
   </div>
 </section>
@@ -416,8 +444,8 @@ def sitemap():
 if DIST.exists():
     shutil.rmtree(DIST)
 shutil.copytree(SRC / "static", DIST)
-shutil.copy(SRC / "style.css", DIST / "style.css")
-shutil.copy(SRC / "k.js", DIST / "k.js")
+shutil.copy(SRC / "style.css", DIST / CSS)
+shutil.copy(SRC / "k.js", DIST / JS)
 
 index()
 legal("tos", "Terms of Service", "The terms for using the VM-Text Discord app.")

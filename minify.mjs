@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { minify as minifyHtml } from "html-minifier-terser";
 import { transform } from "lightningcss";
@@ -20,7 +20,7 @@ for (const name of ["index.html", "tos.html", "pp.html", "404.html"]) {
   writeFileSync(file, out.replace(/\s*\n\s*/g, " "));
 }
 
-const cssFile = path.join(dist, "style.css");
+const cssFile = path.join(dist, readdirSync(dist).find((f) => /^style\..+\.css$/.test(f)));
 const css = transform({
   filename: "style.css",
   code: readFileSync(cssFile),
@@ -28,6 +28,6 @@ const css = transform({
 });
 writeFileSync(cssFile, css.code.toString().replace(/\n/g, ""));
 
-const jsFile = path.join(dist, "k.js");
+const jsFile = path.join(dist, readdirSync(dist).find((f) => /^k\..+\.js$/.test(f)));
 const js = await minifyJs(readFileSync(jsFile, "utf8"), { compress: true, mangle: true });
 writeFileSync(jsFile, js.code.replace(/\n/g, ""));
