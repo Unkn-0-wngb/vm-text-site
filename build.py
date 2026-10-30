@@ -116,6 +116,28 @@ def waveform():
     return "".join(f'<i style="height:{max(14, h * 0.28):.0f}px"></i>' for h in heights)
 
 
+def ctx_menu(active):
+    send = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
+    chevron = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>'
+    search = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'
+    icon = '<img src="/icon.png" alt="" width="20" height="20">'
+
+    def item(name):
+        on = " on" if name == active else ""
+        return f'<div class="ctx-item{on}">{name}{send}</div>'
+
+    return f"""<div class="ctx" role="img" aria-label="Discord Apps menu: VM-Text, then {active}">
+  <div class="ctx-panel">
+    <div class="ctx-search">{search}Search commands</div>
+    <div class="ctx-label">Frequently Used Commands</div>
+    <div class="ctx-row">{icon}<span>{active}</span>{send}</div>
+    <div class="ctx-label">Apps</div>
+    <div class="ctx-row open">{icon}<span>VM-Text</span>{chevron}</div>
+  </div>
+  <div class="ctx-sub">{item("Transcribe (private)")}{item("Transcribe (public)")}</div>
+</div>"""
+
+
 def index():
     page = head(
         "VM-Text - Voice messages, as text",
@@ -178,14 +200,14 @@ def index():
         <div class="icon">{svg("lock")}</div>
         <h3>Transcribe (private)</h3>
         <p>Right-click any voice message and only you see the transcript. Perfect for DMs, meetings and noisy places.</p>
-        <div class="menu-demo"><small>Apps</small><div>VM-Text</div><div class="on">Transcribe (private)</div><div>Transcribe (public)</div></div>
+        {ctx_menu("Transcribe (private)")}
       </div>
 
       <div class="card span-3">
         <div class="icon">{svg("users")}</div>
         <h3>Transcribe (public)</h3>
         <p>Post the transcript to the channel so everyone can read it, including people who can't play audio right now.</p>
-        <div class="menu-demo"><small>Apps</small><div>VM-Text</div><div>Transcribe (private)</div><div class="on">Transcribe (public)</div></div>
+        {ctx_menu("Transcribe (public)")}
       </div>
 
       <div class="card span-2">
