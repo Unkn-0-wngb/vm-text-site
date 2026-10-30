@@ -123,7 +123,13 @@ def header(current=""):
       <a href="/#faq">FAQ</a>
       <a href="{SUPPORT}">Support</a>
     </nav>
-    <a class="btn blurple small-btn" href="{USER_LINK}">{DISCORD}Add to Discord</a>
+    <details class="add">
+      <summary class="btn blurple small-btn">{DISCORD}Add to Discord<svg class="chev" viewBox="0 0 24 24" {STROKE}><polyline points="6 9 12 15 18 9"/></svg></summary>
+      <div class="menu">
+        <a href="{USER_LINK}"><b>To my account</b><span>Use it in any DM, group chat or server</span></a>
+        <a href="{SERVER_LINK}"><b>To a server</b><span>Also replies to voice messages automatically</span></a>
+      </div>
+    </details>
   </div>
 </header>
 """
