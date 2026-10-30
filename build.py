@@ -270,7 +270,7 @@ def index():
     <div class="facts">
       <div class="fact"><strong>0</strong><span>audio recordings saved</span></div>
       <div class="fact"><strong>0</strong><span>third parties that receive your audio</span></div>
-      <div class="fact"><strong>3</strong><span>settings stored: language, output style, auto mode</span></div>
+      <div class="fact"><strong>Text</strong><span>is all that's kept: transcripts, so each message is only done once, and a few settings</span></div>
     </div>
     <p class="fine">Read the full <a href="/pp">Privacy Policy</a> and <a href="/tos">Terms of Service</a>.</p>
   </div>
@@ -289,7 +289,7 @@ def index():
       </details>
       <details>
         <summary>Does it save my voice messages?</summary>
-        <p>No. The audio is held in memory while it's transcribed and then thrown away. Only your language and output settings are stored.</p>
+        <p>No. The audio is held in memory while it's transcribed and then thrown away. The transcript text is saved so each voice message is only transcribed once, and asking again shows the saved text. It's deleted if the message is deleted. Your language and output settings are stored too.</p>
       </details>
       <details>
         <summary>Why does it need the Message Content permission?</summary>
