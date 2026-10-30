@@ -515,9 +515,65 @@ section { padding: 88px 0; }
 .ctx-item.on { background: #5865f2; color: #fff; }
 .ctx-item.on svg { color: #fff; }
 
-@media (max-width: 480px) {
-  .ctx { flex-direction: column; }
-  .ctx-panel, .ctx-sub { width: 100%; }
+.ctx3 {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: max-content;
+  font: 500 0.82rem/1.3 "Inter", system-ui, sans-serif;
+  color: #dbdee1;
+  color-scheme: dark;
+}
+
+.ctx3 .ctx { margin-top: 247px; }
+
+.ctx-menu {
+  width: 206px;
+  flex: none;
+  background: #111214;
+  border: 1px solid #1e1f22;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  padding: 6px;
+}
+
+.mgroup + .mgroup {
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid #2b2d31;
+}
+
+.mrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  color: #b5bac1;
+}
+
+.mrow svg { width: 15px; height: 15px; flex: none; }
+.mrow span { flex: 1; white-space: nowrap; }
+.mrow svg:last-child:not(:first-child) { width: 13px; height: 13px; }
+.mrow.on { background: #35373c; color: #f2f3f5; }
+.mrow.danger { color: #f23f43; }
+
+.duo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 48px;
+  align-items: center;
+}
+
+.opt { margin-top: 18px; }
+.opt h4 { margin: 0 0 4px; font: 700 1.05rem var(--display); letter-spacing: -0.01em; }
+.opt p { margin: 0; }
+
+.ctx-scroll { overflow-x: auto; padding: 4px 2px 8px; }
+
+@media (max-width: 920px) {
+  .duo { grid-template-columns: minmax(0, 1fr); gap: 28px; }
 }
 
 /* steps */

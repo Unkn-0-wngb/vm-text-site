@@ -116,25 +116,75 @@ def waveform():
     return "".join(f'<i style="height:{max(14, h * 0.28):.0f}px"></i>' for h in heights)
 
 
-def ctx_menu(active):
-    send = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
-    chevron = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>'
-    search = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'
+MENU_ICONS = {
+    "smile": '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    "reply": '<polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/>',
+    "forward": '<polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/>',
+    "thread": '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+    "copy": '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+    "translate": '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+    "bookmark": '<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>',
+    "clock": '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    "apps": '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',
+    "unread": '<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/>',
+    "link": '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+    "speak": '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>',
+    "flag": '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
+    "id": '<line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>',
+}
+
+MENU_GROUPS = [
+    [("smile", "Add Reaction", "sub")],
+    [("reply", "Reply", ""), ("forward", "Forward", ""), ("thread", "Create Thread", "")],
+    [
+        ("copy", "Copy Text", ""),
+        ("translate", "Translate", ""),
+        ("bookmark", "Bookmark Message", ""),
+        ("clock", "Create Reminder", "sub"),
+        ("apps", "Apps", "on"),
+        ("unread", "Mark Unread", ""),
+        ("link", "Copy Message Link", ""),
+        ("speak", "Speak Message", ""),
+    ],
+    [("flag", "Report Message", "danger")],
+    [("id", "Copy Message ID", "")],
+]
+
+
+def ctx_menu(active="Transcribe (private)"):
+    stroke = 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"'
+    send = f'<svg viewBox="0 0 24 24" {stroke}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
+    chevron = f'<svg viewBox="0 0 24 24" {stroke}><polyline points="9 18 15 12 9 6"/></svg>'
+    search = f'<svg viewBox="0 0 24 24" {stroke}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'
     icon = '<img src="/icon.png" alt="" width="20" height="20">'
 
     def item(name):
         on = " on" if name == active else ""
         return f'<div class="ctx-item{on}">{name}{send}</div>'
 
-    return f"""<div class="ctx" role="img" aria-label="Discord Apps menu: VM-Text, then {active}">
-  <div class="ctx-panel">
-    <div class="ctx-search">{search}Search commands</div>
-    <div class="ctx-label">Frequently Used Commands</div>
-    <div class="ctx-row">{icon}<span>{active}</span>{send}</div>
-    <div class="ctx-label">Apps</div>
-    <div class="ctx-row open">{icon}<span>VM-Text</span>{chevron}</div>
+    groups = []
+    for group in MENU_GROUPS:
+        rows = []
+        for key, label, state in group:
+            cls = {"on": " on", "danger": " danger"}.get(state, "")
+            arrow = chevron if state in ("sub", "on") else ""
+            rows.append(
+                f'<div class="mrow{cls}"><svg viewBox="0 0 24 24" {stroke}>{MENU_ICONS[key]}</svg><span>{label}</span>{arrow}</div>'
+            )
+        groups.append('<div class="mgroup">' + "".join(rows) + "</div>")
+
+    return f"""<div class="ctx3" role="img" aria-label="Discord right-click menu: Apps, then VM-Text, then {active}">
+  <div class="ctx-menu">{"".join(groups)}</div>
+  <div class="ctx">
+    <div class="ctx-panel">
+      <div class="ctx-search">{search}Search commands</div>
+      <div class="ctx-label">Frequently Used Commands</div>
+      <div class="ctx-row">{icon}<span>Transcribe (public)</span>{send}</div>
+      <div class="ctx-label">Apps</div>
+      <div class="ctx-row open">{icon}<span>VM-Text</span>{chevron}</div>
+    </div>
+    <div class="ctx-sub">{item("Transcribe (private)")}{item("Transcribe (public)")}</div>
   </div>
-  <div class="ctx-sub">{item("Transcribe (private)")}{item("Transcribe (public)")}</div>
 </div>"""
 
 
@@ -196,18 +246,20 @@ def index():
     </div>
 
     <div class="bento">
-      <div class="card span-3">
-        <div class="icon">{svg("lock")}</div>
-        <h3>Transcribe (private)</h3>
-        <p>Right-click any voice message and only you see the transcript. Perfect for DMs, meetings and noisy places.</p>
-        {ctx_menu("Transcribe (private)")}
-      </div>
-
-      <div class="card span-3">
-        <div class="icon">{svg("users")}</div>
-        <h3>Transcribe (public)</h3>
-        <p>Post the transcript to the channel so everyone can read it, including people who can't play audio right now.</p>
-        {ctx_menu("Transcribe (public)")}
+      <div class="card span-6 duo">
+        <div>
+          <div class="icon">{svg("lock")}</div>
+          <h3>Right-click, pick Apps, choose how to share</h3>
+          <div class="opt">
+            <h4>Transcribe (private)</h4>
+            <p>Only you see the transcript. Perfect for DMs, meetings and noisy places.</p>
+          </div>
+          <div class="opt">
+            <h4>Transcribe (public)</h4>
+            <p>Posts the transcript to the channel so everyone can read it, including people who can't play audio right now.</p>
+          </div>
+        </div>
+        <div class="ctx-scroll">{ctx_menu()}</div>
       </div>
 
       <div class="card span-2">
