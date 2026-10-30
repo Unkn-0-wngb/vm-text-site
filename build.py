@@ -138,7 +138,6 @@ MENU_GROUPS = [
     [("reply", "Reply", ""), ("forward", "Forward", ""), ("thread", "Create Thread", "")],
     [
         ("copy", "Copy Text", ""),
-        ("translate", "Translate", ""),
         ("bookmark", "Bookmark Message", ""),
         ("clock", "Create Reminder", "sub"),
         ("apps", "Apps", "on"),
