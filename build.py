@@ -72,6 +72,9 @@ ICONS = {
     "check": '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
     "globe": '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
     "sliders": '<line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>',
+    "key": '<circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/>',
+    "clock": '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    "hash": '<line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>',
     "help": '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
 }
 
@@ -224,13 +227,18 @@ FEATURES = [
     ("bolt", "Automatic replies", "In a server, VM-Text can reply to every voice message by itself. Anyone with Manage Server can switch it off."),
     ("list", "A fair queue", "Requests are handled one at a time, in order. If you have to wait, it tells you your place."),
     ("check", "Transcribed once", "Each voice message is done a single time. Ask again later and you get the saved text straight away."),
-    ("globe", "21 languages", "It works out the language on its own. If it guesses wrong, pick one yourself in /config."),
+    ("globe", "24 languages", "It works out the language on its own. If it guesses wrong, pick one yourself in /config."),
+    ("key", "Role access", "Limit VM-Text to the roles you choose. It also works for people who added the app to their own account, as long as VM-Text is in your server too."),
+    ("clock", "Limits", "Set the longest clip it will transcribe and a cooldown per person, so it can't be spammed."),
+    ("hash", "Channel control", "Pick which channels get automatic replies, and switch public transcripts off if you only want private ones."),
 ]
 
 COMMANDS = [
     ("Transcribe (private)", "Apps menu", "Right-click a voice message, then Apps, then VM-Text. Only you see the transcript."),
     ("Transcribe (public)", "Apps menu", "Same menu. The transcript is posted in the channel for everyone."),
-    ("/config", "Slash command", "Choose your language and whether replies are embeds or plain text. Server admins can set a default language and turn automatic replies on or off."),
+    ("/config", "Slash command", "Choose your language and output style. People with Manage Server also get server settings: allowed roles, auto-reply channels, longest clip, cooldown and defaults."),
+    ("/help", "Slash command", "A short guide to using VM-Text, with links to the website and support server."),
+    ("/stats", "Slash command", "Shows how many servers it's in, how many transcripts are saved, the queue and uptime."),
 ]
 
 FAQ = [
@@ -239,6 +247,7 @@ FAQ = [
     ("Why does it ask for the Message Content permission?", "So it can tell that a message in a server is a voice message and fetch the audio. It doesn't read or store ordinary text messages."),
     ("Account or server, which should I pick?", "On your account you can use the Transcribe commands in any DM, group chat or server, but only when you ask. Added to a server, the bot can also reply to every voice message there automatically. You can have both."),
     ("How do I turn off the automatic replies?", "Someone with the Manage Server permission can run /config and switch automatic transcription off."),
+    ("Can I limit who uses it in my server?", "Yes. Run /config with Manage Server, open Server: access and pick the roles that are allowed. If VM-Text is also in your server, people who added it to their own account are held to the same rules there."),
     ("The transcript is wrong.", "Background noise, strong accents, names and people talking over each other all cause mistakes. Setting the right language in /config usually helps."),
     ("Where do I get help?", f'Join the <a href="{SUPPORT}">support server</a> and open a ticket, or email <a href="mailto:{EMAIL}">{EMAIL}</a>.'),
     ("Who runs this?", f"Lavery.Jonez, in Scotland. It's a one-person project and runs on a small server I look after myself."),
@@ -303,7 +312,7 @@ def index():
 
 <section class="stats">
   <div class="wrap">
-    <div><b>21</b><span>languages</span></div>
+    <div><b>24</b><span>languages</span></div>
     <div><b>0</b><span>audio files saved</span></div>
     <div><b>Free</b><span>no ads, no tracking</span></div>
   </div>
@@ -333,7 +342,7 @@ def index():
 <section class="part" id="commands">
   <div class="wrap">
     <h2>Commands</h2>
-    <p class="sub">Two entries in the Apps menu and one slash command.</p>
+    <p class="sub">Two entries in the Apps menu and a few slash commands. Every reply has a Plain text button for easy copying, and a Delete button for the person who asked.</p>
     <div class="cmds">{cmds}</div>
   </div>
 </section>
