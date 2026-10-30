@@ -1,3 +1,4 @@
+import math
 import re
 import shutil
 from pathlib import Path
@@ -61,8 +62,8 @@ def head(title, desc, path, robots=None):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f4efe4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#14120e" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ebe6da" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0c0b" media="(prefers-color-scheme: dark)">
 {extra}
 <link rel="canonical" href="{url}">
 <link rel="icon" type="image/png" href="/favicon.png">
@@ -186,6 +187,30 @@ def ctx_menu(active="Transcribe (private)"):
 </div>"""
 
 
+LANGS = [
+    "English", "Spanish", "French", "German", "Italian", "Portuguese", "Dutch", "Polish", "Russian", "Ukrainian",
+    "Latvian", "Lithuanian", "Swedish", "Czech", "Romanian", "Turkish", "Arabic", "Hindi", "Japanese", "Korean", "Chinese",
+]
+
+
+def field():
+    bars = []
+    for i in range(120):
+        h = 10 + 62 * abs(math.sin(i * 0.37) * math.cos(i * 0.11 + 1.3)) + 6 * abs(math.sin(i * 1.9))
+        h = min(h, 76)
+        cls = "p" if i < 60 else "q"
+        bars.append(f'<rect class="{cls}" x="{i * 10}" y="{(80 - h) / 2:.1f}" width="6" height="{h:.1f}" rx="3"/>')
+    return f'<svg class="bars" viewBox="0 0 1200 80" preserveAspectRatio="xMidYMid slice" aria-hidden="true">{"".join(bars)}</svg>'
+
+
+def strip():
+    items = "".join(f"<span>{n}</span>" for n in LANGS)
+    return (
+        f'<div class="strip" role="img" aria-label="Works in {len(LANGS)} languages: {", ".join(LANGS)}">'
+        f'<div class="track" aria-hidden="true"><div>{items}</div><div>{items}</div></div></div>'
+    )
+
+
 def index():
     page = head(
         "VM-Text: voice messages, as text",
@@ -196,14 +221,15 @@ def index():
     page += f"""<main id="main">
 <section class="hero">
   <div class="wrap">
-    <div>
-      <h1>Voice messages, <span class="mark">as text.</span></h1>
-      <p class="lede">VM-Text is a Discord app that transcribes voice messages. Right-click one, pick Apps, and a few seconds later you have the words. The audio is never saved.</p>
+    <div class="hero-copy">
+      <p class="tc"><span class="rec"></span>Discord app &middot; free</p>
+      <h1><span class="cap">Voice messages,</span> <span class="cap hot">as text.</span></h1>
+      <p class="lede">Right-click a voice message, pick Apps, and a few seconds later you have the words. The audio is never saved.</p>
       <div class="btns">
         <a class="btn solid" href="{USER_LINK}">Add to my account</a>
         <a class="btn" href="{SERVER_LINK}">Add to a server</a>
       </div>
-      <p class="small">Free. Works in DMs, group chats and servers.</p>
+      <p class="small">Works in DMs, group chats and servers.</p>
     </div>
 
     <div class="discord" role="img" aria-label="Example: a voice message from Alex, followed by VM-Text's transcript of it">
@@ -232,11 +258,14 @@ def index():
       </div>
     </div>
   </div>
+  <div class="field">{field()}<div class="head"><span>0:03 / 0:07</span></div></div>
 </section>
+
+{strip()}
 
 <section class="part" id="features">
   <div class="wrap split">
-    <h2>What it does</h2>
+    <div class="rail"><p class="tc">00:07</p><h2>What it does</h2></div>
     <div class="rows">
       <div><h3>Transcribe (private)</h3><p>Only you see the result. Good for DMs, meetings, or anywhere you can't play audio.</p></div>
       <div><h3>Transcribe (public)</h3><p>Posts the transcript in the channel so everyone there can read it.</p></div>
@@ -250,24 +279,23 @@ def index():
 </section>
 
 <section class="part" id="using">
-  <div class="wrap split">
-    <h2>Using it</h2>
-    <div>
-      <ol class="steps">
-        <li><span>Add VM-Text to your Discord account, or to a server.</span></li>
-        <li><span>Right-click a voice message (long-press on mobile) and open Apps, then VM-Text.</span></li>
-        <li><span>Choose private or public. The transcript turns up in a few seconds.</span></li>
-      </ol>
-      <div class="diagram-wrap">{ctx_menu()}</div>
-    </div>
+  <div class="wrap">
+    <div class="rail flat"><p class="tc">00:14</p><h2>Using it</h2></div>
+    <ol class="steps">
+      <li><b>Add it</b><span>Add VM-Text to your Discord account, or to a server.</span></li>
+      <li><b>Right-click</b><span>Right-click a voice message (long-press on mobile) and open Apps, then VM-Text.</span></li>
+      <li><b>Read it</b><span>Choose private or public. The transcript turns up in a few seconds.</span></li>
+    </ol>
+    <div class="diagram-wrap">{ctx_menu()}</div>
   </div>
 </section>
 
 <section class="part" id="privacy">
   <div class="wrap split">
-    <h2>Your data</h2>
+    <div class="rail"><p class="tc">00:21</p><h2>Your data</h2></div>
     <div class="prose-lg">
-      <p>Voice messages are transcribed on my own server with Whisper, an open-source model. The audio isn't sent to any outside service, and it's thrown away as soon as the text exists.</p>
+      <p class="big">The audio stays on my own server and is thrown away the moment the text exists.</p>
+      <p>Voice messages are transcribed with Whisper, an open-source model. Nothing is sent to an outside service.</p>
       <p>What is kept:</p>
       <ul>
         <li>the transcript text, so the same message isn't transcribed twice (it's deleted if the message is deleted);</li>
@@ -280,7 +308,7 @@ def index():
 
 <section class="part" id="faq">
   <div class="wrap split">
-    <h2>Questions</h2>
+    <div class="rail"><p class="tc">00:28</p><h2>Questions</h2></div>
     <div>
       <details>
         <summary>Is it free?</summary>
@@ -314,13 +342,13 @@ def index():
   </div>
 </section>
 
-<section class="part closing">
+<section class="closing">
   <div class="wrap">
-    <h2>Give it a go on your own account first.</h2>
-    <p>It takes a couple of clicks, and you can remove it just as easily.</p>
+    <h2>Try it on your own account first.</h2>
+    <p>A couple of clicks to add, and just as easy to remove.</p>
     <div class="btns">
-      <a class="btn solid" href="{USER_LINK}">Add to my account</a>
-      <a class="btn" href="{SERVER_LINK}">Add to a server</a>
+      <a class="btn dark" href="{USER_LINK}">Add to my account</a>
+      <a class="btn line" href="{SERVER_LINK}">Add to a server</a>
     </div>
   </div>
 </section>
@@ -367,7 +395,7 @@ def not_found():
     page += header()
     page += f"""<main id="main">
 <div class="wrap lost">
-  <h1>That page isn't here.</h1>
+  <h1><span class="cap">That page isn't here.</span></h1>
   <p>The link may be old or mistyped. <a href="/">Go back to the start</a>.</p>
 </div>
 </main>
